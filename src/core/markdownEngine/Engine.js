@@ -3,11 +3,12 @@ function calculateBlogHead(contentMarkdown) {
     //提取博文信息
     let reg = /\/\*[\w\W]+?\*\//;
     let titleReg = /title:[\w\W]+?\n/;
-    let dateReg = /date:\d\d\d\d-\d\d-\d\d\n/;
+    let dateReg = /date:\d\d\d\d-\d\d-\d\d/;
     let keywordReg = /keyword:[\w\W]+?\n/;
     let res = reg.exec(contentMarkdown)[0];
     let title = titleReg.exec(res) ? titleReg.exec(res)[0].trim() : null;
-    let date = dateReg.exec(res) ? dateReg.exec(res)[0].trim() : null;
+    let date = res.match(dateReg);
+    date = date ? date[0].trim() : null;
     let keyword = keywordReg.exec(res) ? keywordReg.exec(res)[0].trim() : null;
     title = title ? "\"" + title.slice(0, 5) + "\":" + "\"" + title.slice(6) + "\"" : null;
     date = date ? "\"" + date.slice(0, 4) + "\":" + "\"" + date.slice(5) + "\"" : null;
@@ -22,11 +23,11 @@ function calculateOneMarkdownLine(markdown) {
 
     //开始解析
 
-    
+
     //换行
     if (markdown === '')
         return "<br/>"
-    
+
     //分割线
     if (markdown === '***' || markdown === '---')
         return "<hr/>"
@@ -64,8 +65,8 @@ function calculateOneMarkdownLine(markdown) {
     //无序列表 接多行计算函数
     reg = /(^- (.+))|(^ {3}- (.+))/
     res = reg.exec(markdown);
-    if (res && markdown.indexOf("|")===-1) {
-   
+    if (res && markdown.indexOf("|") === -1) {
+
         if (markdown[2] === ' ') {
             markdown = "<uli>" + markdown.slice(4) + "</uli>"
         } else {
@@ -81,7 +82,7 @@ function calculateOneMarkdownLine(markdown) {
     }
     //单个简短代码块
     reg = /(?!<=`)`(?!=`)(([^`])+)(?!<=`)`(?!=`)/g
-    markdown=markdown.replace(/ /g,"&nbsp;");
+    markdown = markdown.replace(/ /g, "&nbsp;");
     markdown = markdown.replace(reg, (match, p1) => "<code>" + p1 + "</code>")
 
     //图片
@@ -90,8 +91,8 @@ function calculateOneMarkdownLine(markdown) {
         let res = "<img src=\"" + p2 + "\" alt=\"" + p1 + "\"/>"
         return res;
     })
-    
-    
+
+
 
     //超链接
     reg = /\[([\w\W]+)\]\(([\w\W]+)\)/g
@@ -126,7 +127,7 @@ function calculateMultipleMarkdownLine(markdownDom) {
     //多行代码块
     reg = /```[\w\W]+```/g
     markdownDom = markdownDom.replace(reg, (match) => {
-        match=match.replace(/ /g,"&nbsp;");
+        match = match.replace(/ /g, "&nbsp;");
         let language = match.slice(3, match.indexOf("\n"));
         let code = match.slice(match.indexOf('\n') + 1, -3);
         code = code.replace(/\n/g, "<br/>")
@@ -167,51 +168,51 @@ function calculateMultipleMarkdownLine(markdownDom) {
 
     reg = /((.+?\|)+.+\n*)+/g;
     markdownDom = markdownDom.replace(reg, (match) => {
-        let res=match.split("\n");
-        let tableDom="<table>"
-        let tableRules=[];
-        let tbody="<tbody>"
-        for(let i=0;i<res.length;i++){
-            if(i===0){
-                let headDom="<tr>" //表头
-                let headList=res[i].split("|").map((item)=>item.trim())
-                headList.map((item)=>headDom+="<th>"+item+"</th>")
-                headDom+="</tr>"
-                tableDom+=headDom;
+        let res = match.split("\n");
+        let tableDom = "<table>"
+        let tableRules = [];
+        let tbody = "<tbody>"
+        for (let i = 0; i < res.length; i++) {
+            if (i === 0) {
+                let headDom = "<tr>" //表头
+                let headList = res[i].split("|").map((item) => item.trim())
+                headList.map((item) => headDom += "<th>" + item + "</th>")
+                headDom += "</tr>"
+                tableDom += headDom;
                 continue;
             }
-            if(i===1){
-                
-                let rule=res[i].split("|").map(item=>item.trim());
-                rule.map((item,index)=>{
-                    let lastIndex=item.length-1;
-                    if(item[0]===":"&&item[lastIndex]===":"){
-                        tableRules[index]="c";
+            if (i === 1) {
+
+                let rule = res[i].split("|").map(item => item.trim());
+                rule.map((item, index) => {
+                    let lastIndex = item.length - 1;
+                    if (item[0] === ":" && item[lastIndex] === ":") {
+                        tableRules[index] = "c";
                         return;
                     }
-                    if(item[lastIndex]===":"){
-                        tableRules[index]="r";
+                    if (item[lastIndex] === ":") {
+                        tableRules[index] = "r";
                         return;
                     }
-                    tableRules[index]="l"
+                    tableRules[index] = "l"
                 })
                 continue;
-                
+
             }
-            
-            let rowList=res[i].split("|").map((item)=>item.trim());
-            let content="<tr>" //表格每一行内容
-            rowList.map((item,index)=>content+="<td style:\"text-align:"+(tableRules[index]==="c"?"center":(tableRules[index]==="r"?"right":"left"))+";\">"+item+"</td>");
-            
-            content+="</tr>";
-            tbody+=content;
+
+            let rowList = res[i].split("|").map((item) => item.trim());
+            let content = "<tr>" //表格每一行内容
+            rowList.map((item, index) => content += "<td style:\"text-align:" + (tableRules[index] === "c" ? "center" : (tableRules[index] === "r" ? "right" : "left")) + ";\">" + item + "</td>");
+
+            content += "</tr>";
+            tbody += content;
 
         }
-        tbody+="</tbody>"
-        tableDom+=tbody;
-        tableDom+="</table>"
+        tbody += "</tbody>"
+        tableDom += tbody;
+        tableDom += "</table>"
         console.log(tableDom);
-        
+
         return tableDom;
     })
     return markdownDom;

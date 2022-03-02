@@ -45,3 +45,9 @@ const getBlogHead = async () => {
 
 getBlogHead();
 </script>
+
+<style lang="scss" scoped>
+#title {
+  color: var(--theme-color);
+}
+</style>
