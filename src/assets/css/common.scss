@@ -1,15 +1,7 @@
-/*
- * Filename: e:\code\ascs-shengan\src\assets\css\common.scss
- * Path: e:\code\ascs-shengan
- * Created Date: Monday, February 28th 2022, 2:19:36 pm
- * Author: yang jian fei
- * 
- * Copyright (c) 2022 瑞为
- */
 * {
     box-sizing: border-box;
 }
-:root {
+html:root {
     --theme-color: #a81f23;
     --theme-text: #303133;
     --theme-text-light-1: #606266;
@@ -104,6 +96,6 @@ a {
         }
     }
 }
-.el-backtop {
+body .el-backtop {
     --el-backtop-hover-bg-color: var(--el-color-primary-light-9);
 }
