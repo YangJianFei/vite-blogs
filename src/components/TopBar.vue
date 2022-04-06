@@ -61,7 +61,7 @@ getCompanyInfo();
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(30px);
   box-sizing: border-box;
-  z-index: 9000;
+  z-index: 900;
 
   #classification {
     display: inline-block;

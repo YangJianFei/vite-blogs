@@ -4,7 +4,7 @@
       <div>
         <h2 class="company-name">北京深感科技有限公司</h2>
         <p>北京市海淀区知春路1号学院国际大厦</p>
-        <p>Copyright©2017 DeepSense Technologies Co., Ltd. | 京ICP备16043436号</p>
+        <p>Copyright©2017 DeepSense Technologies Co., Ltd. | <a href="https://beian.miit.gov.cn" target="_blank">京ICP备16043436号</a></p>
       </div>
       <div class="tx-right">
         <h2>联系我们</h2>
