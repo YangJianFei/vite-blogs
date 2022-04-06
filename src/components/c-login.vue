@@ -16,8 +16,8 @@
         <el-input v-model="model.password" type="password" show-password placeholder="密码位数大于5，小于30" @keypress.enter="submitForm"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-checkbox v-model="model.remember">记住登陆</el-checkbox>
-        <el-button class="w100" type="primary" @click="submitForm">登陆</el-button>
+        <el-checkbox v-model="model.remember">记住登录</el-checkbox>
+        <el-button class="w100" type="primary" @click="submitForm">登录</el-button>
       </el-form-item>
       <el-form-item>
         <span>还没有账号？<a href="./auth.html?path=register">点击注册</a></span>
@@ -69,7 +69,7 @@ const submitForm = () => {
         localStorage.setItem('nowUser', JSON.stringify(model.value));
         ElMessage({
           type: 'success',
-          message: '登陆成功',
+          message: '登录成功',
           duration: 1500,
           onClose: () => {
             window.location.href = './index.html';

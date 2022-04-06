@@ -6,7 +6,7 @@
       <a href="#" @click="loginOut">退出</a>
     </div>
     <div v-else>
-      <a href="./auth.html">登陆</a>
+      <a href="./auth.html">登录</a>
       <span id="separator">/</span>
       <a href="./auth.html?path=register">注册</a>
     </div>
